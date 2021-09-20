@@ -10,14 +10,10 @@ if (module.hot) {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    // This is the ONLY TIME we do direct assignment to this.state
-    this.state = { 
-      lat: null, 
-      errorMessage: '' 
-    }
   }
 
   state = { lat: null, errorMessage: ""}
+
   // This function will be automatically called ONE time when our component first gets rendered
   componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(

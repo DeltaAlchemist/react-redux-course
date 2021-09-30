@@ -4,9 +4,27 @@ import axios from 'axios'
 const Search = () => {
 
     const [term, setTerm] = useState('apple')
+    const [debouncedTerm, setDebouncedTerm] = useState(term)
     const [results, setResults] = useState([])
     
-    useEffect(() => {
+
+    /* Debouncing useEffect to handle extra intial API call
+
+       Anytime this useEffect changes, we're going to queue up a change to 'debounceTerm', 
+       that's going to execute in 800ms 
+    */
+    useEffect(() => { // It will run anytime 'term' changes
+        const timerID = setTimeout(() => { // Update deboncedTerm whenever this function is executed
+            setDebouncedTerm(term)
+        }, 800)
+
+        return () => { // Clean-up function
+            clearTimeout(timerID)
+        }
+    }, [term]) // 'term' is going to change anytime user types
+
+    /* Whenever this useEffect runs, we're going to call search(), that'll make a request */
+    useEffect(() => { // It will run whenever 'debouncedTerm' first renders
         const search = async() => {
             const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
                 params: {
@@ -14,29 +32,16 @@ const Search = () => {
                     list: 'search',
                     origin: '*',
                     format: 'json',
-                    srsearch: term,
+                    srsearch: debouncedTerm,
                 }
             })
             setResults(data.query.search)
         }
 
-        // Search on inital render the base value of term ('apple') without the 800ms timeout
-        if (term && !results.length) { 
-            search();
-        } else { // if it's not the initial render, uses the 800ms timeout normally
-            const timeoutID = setTimeout(() => {
-                if (term) { 
-                    search() 
-                }
-            }, 800)
-        
-            // Clean-up function to cancel the previous timer
-            return () => {
-                clearTimeout(timeoutID)
-            }
-        }
+        if (debouncedTerm) { search() }
 
-    }, [term, results.length])
+    }, [debouncedTerm])
+
 
     const renderedResults = results.map((result) => {
         return(

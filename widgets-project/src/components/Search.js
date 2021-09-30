@@ -3,10 +3,8 @@ import axios from 'axios'
 
 const Search = () => {
 
-    const [term, setTerm] = useState('')
+    const [term, setTerm] = useState('apple')
     const [results, setResults] = useState([])
-
-    console.log(results);
     
     useEffect(() => {
         const search = async() => {
@@ -21,8 +19,24 @@ const Search = () => {
             })
             setResults(data.query.search)
         }
-        if (term) { search() }
-    }, [term])
+
+        // Search on inital render the base value of term ('apple') without the 800ms timeout
+        if (term && !results.length) { 
+            search();
+        } else { // if it's not the initial render, uses the 800ms timeout normally
+            const timeoutID = setTimeout(() => {
+                if (term) { 
+                    search() 
+                }
+            }, 800)
+        
+            // Clean-up function to cancel the previous timer
+            return () => {
+                clearTimeout(timeoutID)
+            }
+        }
+
+    }, [term, results.length])
 
     const renderedResults = results.map((result) => {
         return(

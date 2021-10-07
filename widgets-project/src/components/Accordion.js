@@ -13,7 +13,7 @@ const Accordion = ({ items }) => {
         const active = index === activeIndex ? 'active' : ''
 
         return(
-            <React.Fragment key={item.title}>
+            <React.Fragment key={item.title} className="ui container">
                 <div 
                     className={`title ${active}`}
                     onClick={() => onTitleClick(index)}

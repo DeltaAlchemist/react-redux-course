@@ -42,6 +42,7 @@ const App = () => {
 
     return(
         <>
+            <Header />
             <Route path="/">
                 <Accordion items={items}/>
             </Route>

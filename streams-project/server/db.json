@@ -1,3 +1,15 @@
 {
-    "streams": []
+  "streams": [
+    {
+      "title": "TFT",
+      "description": "Challenger 102lp",
+      "id": 1
+    },
+    {
+      "title": "Programmatic Navigation",
+      "description": "You should not see this on the form page!",
+      "userId": "115172091451017344826",
+      "id": 5
+    }
+  ]
 }

@@ -16,12 +16,14 @@ class StreamShow extends React.Component {
 
 		const { title, description } = this.props.stream;
 
-		return(
-			<div>
-				<h1 className="ui header">{title}</h1>
-				<h5 className="ui header">{description}</h5>
-			</div>
-		);
+		return (
+      <div>
+        <h1 className="ui header">
+          {title}
+          <div className="sub header">{description}</div>
+        </h1>
+      </div>
+    );
 	};
 
 };
